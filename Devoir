@@ -1,0 +1,99 @@
+#include <iostream>
+using namespace std;
+template <typename T>
+class NombreComplexe {
+private:
+    T reel;
+    T imaginaire;
+
+public:
+ NombreComplexe() : reel(0), imaginaire(0) {} 
+
+    NombreComplexe(T r, T i) : reel(r), imaginaire(i) {} 
+
+    NombreComplexe(const NombreComplexe& other) 
+        : reel(other.reel), imaginaire(other.imaginaire) {}
+       
+        void afficher() const {
+        cout << reel;
+        if (imaginaire >= 0) {
+            cout <<" + "<< imaginaire << "i";
+        } else {
+            cout << " - " << -imaginaire << "i";
+        }
+        cout << endl;
+    }
+    //Operateurs arithmetriques
+    NombreComplexe operator+(const NombreComplexe& other) const {
+        return NombreComplexe(reel + other.reel, imaginaire + other.imaginaire);
+    }
+
+    NombreComplexe operator-(const NombreComplexe& other) const {
+        return NombreComplexe(reel - other.reel, imaginaire - other.imaginaire);
+    }
+
+    NombreComplexe operator*(const NombreComplexe& other) const {
+        return NombreComplexe(reel * other.reel - imaginaire * other.imaginaire,
+                              reel * other.imaginaire + imaginaire * other.reel);
+    }
+
+    NombreComplexe operator/(const NombreComplexe& other) const {
+        T denom = other.reel * other.reel + other.imaginaire * other.imaginaire;
+        return NombreComplexe((reel * other.reel + imaginaire * other.imaginaire) / denom,
+                              (imaginaire * other.reel - reel * other.imaginaire) / denom);
+    }
+    //Operateurs de comparaison 
+    bool operator==(const NombreComplexe& other) const{
+     return    reel == other.reel && imaginaire == other.imaginaire;
+
+
+    }
+     bool operator!=(const NombreComplexe& other) const{
+       return !(*this==other) ;
+
+    }
+     bool operator<(const NombreComplexe& other) const{
+       return (reel>other.reel && imaginaire) || (reel==other.reel && imaginaire > other.imaginaire);}
+     bool operator>(const NombreComplexe& other) const{
+      return other < *this;
+
+    }
+};
+
+
+int main() {
+    // Tester  les méthodes
+    NombreComplexe<int> z1(4, 8); 
+    NombreComplexe<int> z2(3, -1); 
+
+    cout << "z1: ";
+    z1.afficher();
+    cout << "z2: ";
+    z2.afficher();
+
+    NombreComplexe<int> somme = z1 + z2;
+    cout << "Somme: ";
+    somme.afficher();
+
+    NombreComplexe<int> difference = z1 - z2;
+    cout << "Difference: ";
+    difference.afficher();
+
+    NombreComplexe<int> produit = z1 * z2;
+    cout << "Produit: ";
+    produit.afficher();
+
+    NombreComplexe<int> quotient = z1 / z2;
+    cout << "Quotient: ";
+    quotient.afficher();
+
+    // Tester la comparaison
+    cout << "z1 est egal à z2 : " << (z1 == z2) << endl;
+    cout << "z1 est different de z2 : " << (z1 != z2) << endl;
+     cout << "z1 est inferieur à z2 : " << (z1 < z2) << endl;
+    cout << "z1 est superieur à z2 : " << (z1 > z2) << endl;
+   
+
+    return 0;
+}
+
